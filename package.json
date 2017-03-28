@@ -1,0 +1,22 @@
+{
+  "name": "appium-proxy",
+  "version": "1.0.0",
+  "description": "the proxy for appium server (cloud)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "appium",
+    "proxy"
+  ],
+  "author": "tin.tran",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "connect": "^3.6.0",
+    "http": "0.0.0",
+    "http-proxy": "^1.16.2",
+    "url": "^0.11.0"
+  }
+}
