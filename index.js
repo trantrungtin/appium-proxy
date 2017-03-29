@@ -4,9 +4,13 @@ var http = require('http'),
     httpProxy = require('http-proxy'),
     url = require('url'),
     bodyParser = require('body-parser'),
-    AppiumProxy = require('./appium-proxy');
+    AppiumProxy = require('./appium-proxy'),
+    parser = require('./parser');
 
-var appiumproxy = new AppiumProxy();
+
+var mainParser = parser.getParser();
+let args = mainParser.parseArgs();
+var appiumproxy = new AppiumProxy(args);
 var app = connect()
     .use(bodyParser.json())
     .use(bodyParser.urlencoded())

@@ -4,16 +4,18 @@ var url = require('url');
 var utils = require('./utils');
 var ProxyHandler = require('./proxy-handler');
 
-var PROXY_URL = 'http://192.168.167.214:4724';
 var createdSession = false;
 var sessionRes = {};
 var sessionId;
 var proxyHandler = new ProxyHandler();
 
-var AppiumProxy = module.exports = function AppiumProxy() {
+var AppiumProxy = module.exports = function AppiumProxy(args) {
     this.proxy = httpProxy.createProxyServer({});
     this.proxy.on('proxyReq', proxyReqFunc);
-    this.proxy.on('proxyRes', proxyResFunc);    
+    this.proxy.on('proxyRes', proxyResFunc);
+    this.proxyUrl = args.realUrl;
+    this.commandTimeout = args.commandTimeout;
+    this.ignoreDeleteSession = args.ignoreDeleteSession;
 }
 
 AppiumProxy.prototype = {
@@ -27,7 +29,7 @@ AppiumProxy.prototype = {
             proxyHandler.handleDeleteSession(req, res);
         }
         else {
-            this.proxy.web(req, res, {target: PROXY_URL}, function(e) {
+            this.proxy.web(req, res, {target: this.proxyUrl}, function(e) {
                 console.log(e);
             });
         }

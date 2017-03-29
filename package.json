@@ -13,6 +13,7 @@
   "author": "tin.tran",
   "license": "ISC",
   "dependencies": {
+    "argparse": "^1.0.9",
     "body-parser": "^1.17.1",
     "bufferhelper": "^0.2.1",
     "connect": "^3.6.0",
