@@ -8,14 +8,16 @@ var createdSession = false;
 var sessionRes = {};
 var sessionId;
 var proxyHandler = new ProxyHandler();
+var commandTimeout;
+var ignoreDeleteSession;
 
 var AppiumProxy = module.exports = function AppiumProxy(args) {
     this.proxy = httpProxy.createProxyServer({});
-    this.proxy.on('proxyReq', proxyReqFunc);
-    this.proxy.on('proxyRes', proxyResFunc);
+    this.proxy.on('proxyReq', this.proxyReqFunc);
+    this.proxy.on('proxyRes', this.proxyResFunc);
     this.proxyUrl = args.realUrl;
-    this.commandTimeout = args.commandTimeout;
-    this.ignoreDeleteSession = args.ignoreDeleteSession;
+    commandTimeout = args.commandTimeout;
+    ignoreDeleteSession = args.ignoreDeleteSession;
 }
 
 AppiumProxy.prototype = {
@@ -25,7 +27,7 @@ AppiumProxy.prototype = {
         if (createdSession && utils.isCreateSession(req)) {
             proxyHandler.handleCreatedSession(req,res);
         }
-        else if (utils.isDeleteSession(req)) {
+        else if (ignoreDeleteSession == 'true' && utils.isDeleteSession(req)) {
             proxyHandler.handleDeleteSession(req, res);
         }
         else {
@@ -33,29 +35,34 @@ AppiumProxy.prototype = {
                 console.log(e);
             });
         }
-    }
-}
+    },
+    proxyReqFunc: function(proxyReq, req, res, options) {
+        if (req.body) {
+            
+            // modify a new command timeout
+            if (utils.isCreateSession(req)) {
+                var caps = req.body;
+                caps['desiredCapabilities'].newCommandTimeout = commandTimeout;
+                console.log('caps: ', caps);
+            }
 
-function proxyReqFunc(proxyReq, req, res, options) {
-    if (req.body) {
-        let bodyData = JSON.stringify(req.body);
-
-        // incase if content-type is application/x-www-form-urlencoded -> we need to change to application/json
-        proxyReq.setHeader('Content-Type','application/json');
-        proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
-        // stream the content
-        proxyReq.write(bodyData);
-    }
-}
-
-function proxyResFunc(proxyRes, req, res, options) {
-    utils.modifyResponse(res, function(body) {
-        if (utils.isCreateSession(req)) {
-            createdSession = true;
-            sessionRes = body;
-            sessionId = sessionRes.sessionId;
-            proxyHandler.setBodySession(body);
-            proxyHandler.setSessionId(body.sessionId);
+            let bodyData = JSON.stringify(req.body);
+            // incase if content-type is application/x-www-form-urlencoded -> we need to change to application/json
+            proxyReq.setHeader('Content-Type','application/json');
+            proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
+            // stream the content
+            proxyReq.write(bodyData);
         }
-    });
+    },
+    proxyResFunc: function(proxyRes, req, res, options) {
+        utils.modifyResponse(res, function(body) {
+            if (utils.isCreateSession(req)) {
+                createdSession = true;
+                sessionRes = body;
+                sessionId = sessionRes.sessionId;
+                proxyHandler.setBodySession(body);
+                proxyHandler.setSessionId(body.sessionId);
+            }
+        });
+    }
 }

@@ -10,6 +10,7 @@ var http = require('http'),
 
 var mainParser = parser.getParser();
 let args = mainParser.parseArgs();
+console.log('args:', args);
 var appiumproxy = new AppiumProxy(args);
 var app = connect()
     .use(bodyParser.json())
