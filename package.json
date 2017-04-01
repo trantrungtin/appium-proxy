@@ -28,6 +28,7 @@
     "argparse": "^1.0.9",
     "body-parser": "^1.17.1",
     "bufferhelper": "^0.2.1",
+    "colors": "^1.1.2",
     "connect": "^3.6.0",
     "http": "0.0.0",
     "http-proxy": "^1.16.2",
