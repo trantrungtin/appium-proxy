@@ -3,6 +3,7 @@ var httpProxy = require('http-proxy');
 var url = require('url');
 var utils = require('./utils');
 var ProxyHandler = require('./proxy-handler');
+var logger = require('./logger');
 
 var createdSession = false;
 var sessionRes = {};
@@ -32,7 +33,7 @@ AppiumProxy.prototype = {
         }
         else {
             this.proxy.web(req, res, {target: this.proxyUrl}, function(e) {
-                console.log(e);
+                logger.error('[forward] error:', e);
             });
         }
     },
@@ -43,7 +44,7 @@ AppiumProxy.prototype = {
             if (utils.isCreateSession(req)) {
                 var caps = req.body;
                 caps['desiredCapabilities'].newCommandTimeout = commandTimeout;
-                console.log('caps: ', caps);
+                logger.debug('[proxyReqFunc] caps:', caps);
             }
 
             let bodyData = JSON.stringify(req.body);

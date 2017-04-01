@@ -1,6 +1,7 @@
 'use strict';
 var BufferHelper = require('bufferhelper');
 var Route = require('route-parser');
+var logger = require('./logger');
 
 function isCreateSession(req) {
     if (req.method == 'POST' && req.url == '/wd/hub/session') {
@@ -43,7 +44,7 @@ var modifyResponse = function (res, callback) {
             body = new Buffer(JSON.stringify(body));
         }
         catch (e) {
-            console.log('JSON.parse error:', e);
+            logger.error('[modifyResponse] JSON.parse error:', e);
         }
         _write.call(res, body);
         _end.call(res);

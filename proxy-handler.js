@@ -1,4 +1,5 @@
 'use strict';
+var logger = require('./logger');
 
 var ProxyHandler = module.exports = function ProxyHandler() {
     this.sessionRes = {};
@@ -14,14 +15,14 @@ ProxyHandler.prototype = {
     },
     handleCreatedSession: function(req, res) {
         res.writeHead(200, {'Content-type': 'application/json'});
-        console.log('handleCreatedSession:', this.sessionRes);
+        logger.debug('[handleCreatedSession] sessionRes:', this.sessionRes);
         res.end(JSON.stringify(this.sessionRes));
     },
     handleDeleteSession: function(req, res) {
         res.writeHead(200, {'Content-type': 'application/json'});
         let bodyDeleteSession = {"status":0,"value":null,"sessionId":""};
         bodyDeleteSession.sessionId = this.sessionId;
-        console.log('handleDeleteSession:', this.sessionId);
+        logger.debug('[handleDeleteSession] sessionId:', this.sessionId);
         res.end(JSON.stringify(bodyDeleteSession));
     }
 }
