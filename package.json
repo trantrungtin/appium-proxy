@@ -2,10 +2,10 @@
   "name": "appium-proxy",
   "version": "1.0.1",
   "description": "the proxy for appium server (cloud)",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "preferGlobal": "true",
   "bin": {
-    "appium-proxy": "./index.js"
+    "appium-proxy": "./lib/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
