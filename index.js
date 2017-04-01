@@ -1,4 +1,5 @@
-'use strict';
+#!/usr/bin/env node
+
 var http = require('http'),
     connect = require('connect'),
     httpProxy = require('http-proxy'),
