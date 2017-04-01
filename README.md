@@ -9,6 +9,6 @@ $ npm install -g appium-proxy
 ```
 #### Example
 ```
-$ appium-proxy --real-url "http://192.168.167.214:4724"
+$ appium-proxy --real-url "https://tinonsoftware:123456789@ondemand.saucelabs.com:443/wd/hub"
 ```
-Go to http:\\\\localhost:9000\wd\hub\status and see the result. Replace your appium url by "http:\\\\localhost:9000\wd\hub"
+Replace your appium url by "http://localhost:9000"
