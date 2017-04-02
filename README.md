@@ -2,6 +2,10 @@ appium-proxy
 =======
 `appium-proxy` is a proxy for appium server that supports to keep the server alive for a long time. It is suitable for running test cases belong with one session id.
 
+<p align="center">
+  <img src="https://cloud.githubusercontent.com/assets/4379558/24587351/3dae3dba-17df-11e7-83c8-5c1844ece3bc.png"/>
+</p>
+
 ### Installation
 ```
 $ npm install -g appium-proxy
