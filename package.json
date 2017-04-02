@@ -1,6 +1,6 @@
 {
   "name": "appium-proxy",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "the proxy for appium server (cloud)",
   "main": "./lib/main.js",
   "preferGlobal": "true",
