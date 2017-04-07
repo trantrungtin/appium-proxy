@@ -44,8 +44,8 @@ Secondly, replaced your appium url by "http://localhost:9000"
 String serverUrl = "http://localhost:9000";	
 ```
 #### Setup to run parallel
-Sometimes, you need to run a parallel execution. First, you need to decleare a capability to identify the session which is belong to. For example, I use 'identifyDebug' here.
-Decleared the first one:
+Sometimes, you need to run a parallel execution. First, you need to declared a capability to identify the session which is belong to. For example, I use 'identifyDebug' here.
+Declared the first one:
 ```java
 String serverUrl = "https://tinonsoftware:123456789@ondemand.saucelabs.com:443/wd/hub";	
 DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -57,7 +57,7 @@ capabilities.setCapability("identifyDebug", "id1");
 
 AppiumDriver<WebElement> driver1 = new AndroidDriver<WebElement>(new URL(serverUrl), capabilities);
 ```
-Decleared the second one:
+Declared the second one:
 ```java
 String serverUrl = "https://tinonsoftware:123456789@ondemand.saucelabs.com:443/wd/hub";	
 DesiredCapabilities capabilities = new DesiredCapabilities();
