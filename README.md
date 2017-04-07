@@ -21,6 +21,7 @@ The real-url flag is required, this proxy will use this url as a destination.
 |`--real-url`|required|Original URL of Appium|`--real-url https://tinonsoftware:123456789@ondemand.saucelabs.com:443/wd/hub`|
 |`--command-timeout`|600|This used to keep the server alive (in seconds)|`--command-timeout 600`|
 |`--ignore-delete-session`|true|This proxy will ignore a delete session request to keep server alive|`--ignore-delete-session true`|
+|`--identify-session-key`|null|Check this capability to identify which session will be used|`--identify-session-key identifyDebug`|
 ### Use Cases
 #### Setup a basic appium proxy
 For example, you have a simple code like this:
@@ -42,3 +43,34 @@ Secondly, replaced your appium url by "http://localhost:9000"
 ```java
 String serverUrl = "http://localhost:9000";	
 ```
+#### Setup to run parallel
+Sometimes, you need to run a parallel execution. First, you need to decleare a capability to identify the session which is belong to. For example, I use 'identifyDebug' here.
+Decleared the first one:
+```java
+String serverUrl = "https://tinonsoftware:123456789@ondemand.saucelabs.com:443/wd/hub";	
+DesiredCapabilities capabilities = new DesiredCapabilities();
+capabilities.setCapability("browserName", "chrome"); 
+capabilities.setCapability("deviceName", "Galaxy J7");
+capabilities.setCapability("platformVersion", "5.1.1");
+capabilities.setCapability("platformName", "Android"); 
+capabilities.setCapability("identifyDebug", "id1");
+
+AppiumDriver<WebElement> driver1 = new AndroidDriver<WebElement>(new URL(serverUrl), capabilities);
+```
+Decleared the second one:
+```java
+String serverUrl = "https://tinonsoftware:123456789@ondemand.saucelabs.com:443/wd/hub";	
+DesiredCapabilities capabilities = new DesiredCapabilities();
+capabilities.setCapability("browserName", "chrome"); 
+capabilities.setCapability("deviceName", "Galaxy S6");
+capabilities.setCapability("platformVersion", "6.0.1");
+capabilities.setCapability("platformName", "Android"); 
+capabilities.setCapability("identifyDebug", "id2");
+
+AppiumDriver<WebElement> driver2 = new AndroidDriver<WebElement>(new URL(serverUrl), capabilities);
+```
+Secondly, you also need pass a new argument identify-session-key.
+```
+$ appium-proxy --real-url "https://tinonsoftware:123456789@ondemand.saucelabs.com:443/wd/hub" --identify-session-key identifyDebug
+```
+Now you can replace your url as "http://localhost:9000". To known which sessions are used please enter "http://localhost:9000/json"
