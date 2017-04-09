@@ -5,10 +5,10 @@
   "main": "./build/main.js",
   "preferGlobal": "true",
   "bin": {
-    "appium-proxy": "./lib/main.js"
+    "appium-proxy": "./build/main.js"
   },
   "scripts": {
-    "build": "babel lib -d build",
+    "build": "./node_modules/.bin/babel lib -d build",
     "prepublish": "npm run build"
   },
   "keywords": [
@@ -28,11 +28,7 @@
   "dependencies": {
     "argparse": "^1.0.9",
     "asyncbox": "^2.3.1",
-    "babel-plugin-syntax-async-functions": "^6.13.0",
-    "babel-plugin-transform-regenerator": "^6.24.1",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-register": "^6.24.1",
+    "babel-runtime": "^6.23.0",
     "body-parser": "^1.17.1",
     "bufferhelper": "^0.2.1",
     "colors": "^1.1.2",
@@ -42,5 +38,11 @@
     "route-parser": "0.0.5",
     "url": "^0.11.0",
     "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1"
   }
 }
