@@ -6,6 +6,13 @@ appium-proxy
   <img src="https://cloud.githubusercontent.com/assets/4379558/24587351/3dae3dba-17df-11e7-83c8-5c1844ece3bc.png"/>
 </p>
 
+### Table of Contents
+  * [Installation](#installation)
+  * [Server flags](#server-flags)
+  * [Use Cases](#use-cases)
+    * [Setup a basic appium proxy](#setup-a-basic-appium-proxy)
+    * [Setup to run parallel](#setup-to-run-parallel)
+
 ### Installation
 ```
 $ npm install -g appium-proxy
@@ -18,10 +25,10 @@ The real-url flag is required, this proxy will use this url as a destination.
 |----|-------|-----------|-------|
 |`-a`, `--address`|0.0.0.0|IP Address to listen on|`--address 0.0.0.0`|
 |`-p`, `--port`|9000|port to listen on|`--port 9000`|
-|`--real-url`|required|Original URL of Appium|`--real-url https://tinonsoftware:123456789@ondemand.saucelabs.com:443/wd/hub`|
-|`--command-timeout`|600|This used to keep the server alive (in seconds)|`--command-timeout 600`|
-|`--ignore-delete-session`|true|This proxy will ignore a delete session request to keep server alive|`--ignore-delete-session true`|
-|`--identify-session-key`|null|Check this capability to identify which session will be used|`--identify-session-key identifyDebug`|
+|`--real-url`|required|Original URL of Appium|`--real-url https://xyz@ondemand.saucelabs.com:443/wd/hub`|
+|`--command-timeout`|600|Used to keep the server alive (in seconds)|`--command-timeout 600`|
+|`--delete-session`|true|Ignore a delete session request to keep server alive|`--ignore-delete-session`|
+|`--capability-identify`|id|Identify which session will be used|`--capability-identify id`|
 ### Use Cases
 #### Setup a basic appium proxy
 For example, you have a simple code like this:
@@ -32,6 +39,7 @@ capabilities.setCapability("browserName", "chrome");
 capabilities.setCapability("deviceName", "Galaxy J7");
 capabilities.setCapability("platformVersion", "5.1.1");
 capabilities.setCapability("platformName", "Android"); 
+capabilities.setCapability("id", "id1"); // you have to add this capability
 
 AppiumDriver<WebElement> driver = new AndroidDriver<WebElement>(new URL(serverUrl), capabilities);
 ```
@@ -44,33 +52,31 @@ Secondly, replaced your appium url by "http://localhost:9000"
 String serverUrl = "http://localhost:9000";	
 ```
 #### Setup to run parallel
-Sometimes, you need to run a parallel execution. First, you need to declared a capability to identify the session which is belong to. For example, I use 'identifyDebug' here.
+Sometimes, you need to run a parallel execution. We provide a flag named capability-identify that can identify which the session which belongs to.
+```
+$ appium-proxy --real-url "https://tinonsoftware:123456789@ondemand.saucelabs.com:443/wd/hub" --identify-session-key id
+```
+Now you can replace your url as "http://localhost:9000". 
 Declared the first one:
 ```java
-String serverUrl = "https://tinonsoftware:123456789@ondemand.saucelabs.com:443/wd/hub";	
 DesiredCapabilities capabilities = new DesiredCapabilities();
 capabilities.setCapability("browserName", "chrome"); 
 capabilities.setCapability("deviceName", "Galaxy J7");
 capabilities.setCapability("platformVersion", "5.1.1");
 capabilities.setCapability("platformName", "Android"); 
-capabilities.setCapability("identifyDebug", "id1");
+capabilities.setCapability("id", "id1");
 
 AppiumDriver<WebElement> driver1 = new AndroidDriver<WebElement>(new URL(serverUrl), capabilities);
 ```
 Declared the second one:
 ```java
-String serverUrl = "https://tinonsoftware:123456789@ondemand.saucelabs.com:443/wd/hub";	
 DesiredCapabilities capabilities = new DesiredCapabilities();
 capabilities.setCapability("browserName", "chrome"); 
 capabilities.setCapability("deviceName", "Galaxy S6");
 capabilities.setCapability("platformVersion", "6.0.1");
 capabilities.setCapability("platformName", "Android"); 
-capabilities.setCapability("identifyDebug", "id2");
+capabilities.setCapability("id", "id2");
 
 AppiumDriver<WebElement> driver2 = new AndroidDriver<WebElement>(new URL(serverUrl), capabilities);
 ```
-Secondly, you also need pass a new argument identify-session-key.
-```
-$ appium-proxy --real-url "https://tinonsoftware:123456789@ondemand.saucelabs.com:443/wd/hub" --identify-session-key identifyDebug
-```
-Now you can replace your url as "http://localhost:9000". To known which sessions are used please enter "http://localhost:9000/json"
+To know which sessions are used please enter "http://localhost:9000/json"
