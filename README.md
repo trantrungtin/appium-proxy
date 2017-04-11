@@ -27,7 +27,7 @@ The real-url flag is required, this proxy will use this url as a destination.
 |`-p`, `--port`|9000|port to listen on|`--port 9000`|
 |`--real-url`|required|Original URL of Appium|`--real-url https://xyz@ondemand.saucelabs.com:443/wd/hub`|
 |`--command-timeout`|600|Used to keep the server alive (in seconds)|`--command-timeout 600`|
-|`--delete-session`|true|Ignore a delete session request to keep server alive|`--ignore-delete-session`|
+|`--delete-session`|true|Ignore a delete session request to keep server alive|`--delete-session`|
 |`--capability-identify`|id|Identify which session will be used|`--capability-identify id`|
 ### Use Cases
 #### Setup a basic appium proxy
