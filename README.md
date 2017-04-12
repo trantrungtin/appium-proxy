@@ -1,3 +1,8 @@
+[![NPM version](https://img.shields.io/npm/v/appium-proxy.svg)](https://www.npmjs.com/package/appium-proxy)
+[![Downloads](http://img.shields.io/npm/dm/appium-proxy.svg)](https://www.npmjs.com/package/appium-proxy)
+[![Build Status](https://travis-ci.org/trantrungtin/appium-proxy.svg?branch=master)](https://travis-ci.org/trantrungtin/appium-proxy)
+[![Coverage Status](https://coveralls.io/repos/github/trantrungtin/appium-proxy/badge.svg?branch=master)](https://coveralls.io/github/trantrungtin/appium-proxy?branch=master)
+
 appium-proxy
 =======
 `appium-proxy` is a proxy for appium server that supports to keep the server alive for a long time. It is suitable for running test cases belong with one session id.
