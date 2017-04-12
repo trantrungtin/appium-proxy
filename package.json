@@ -23,8 +23,8 @@
     "url": "https://github.com/trantrungtin/appium-proxy.git"
   },
   "engines": {
-    "node": ">=4",
-    "npm": ">=3"
+    "node": ">=6.0.0",
+    "npm": ">=3.8.6"
   },
   "dependencies": {
     "argparse": "^1.0.9",
