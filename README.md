@@ -59,7 +59,7 @@ String serverUrl = "http://localhost:9000";
 #### Setup to run parallel
 Sometimes, you need to run a parallel execution. We provide a flag named capability-identify that can identify which the session which belongs to.
 ```
-$ appium-proxy --real-url "https://tinonsoftware:123456789@ondemand.saucelabs.com:443/wd/hub" --identify-session-key id
+$ appium-proxy --real-url "https://tinonsoftware:123456789@ondemand.saucelabs.com:443/wd/hub" --capability-identify id
 ```
 Now you can replace your url as "http://localhost:9000". 
 Declared the first one:
