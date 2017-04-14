@@ -1,13 +1,16 @@
 {
   "name": "appium-proxy",
   "description": "the proxy for appium server (cloud)",
-  "main": "./build/main.js",
+  "main": "./build/lib/main.js",
   "preferGlobal": "true",
   "bin": {
-    "appium-proxy": "./build/main.js"
+    "appium-proxy": "./build/lib/main.js"
   },
   "scripts": {
-    "build": "./node_modules/.bin/babel lib -d build",
+    "build": "npm prune && babel lib -d build/lib",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha build/test/* --report lcovonly -- -R spec",
+    "coveralls": "npm run-script coverage && node ./node_modules/coveralls/bin/coveralls.js < coverage/lcov.info",
+    "test": "npm run-script build && babel test -d build/test && mocha build/test",
     "prepublish": "npm run build",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
@@ -42,11 +45,20 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
+    "babel-istanbul": "^0.12.2",
     "babel-plugin-syntax-async-functions": "^6.13.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "semantic-release": "^6.3.2"
+    "chai": "^3.5.0",
+    "coveralls": "^2.13.0",
+    "isparta": "^4.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "node-mocks-http": "^1.6.1",
+    "proxyquire": "^1.7.11",
+    "semantic-release": "^6.3.2",
+    "sinon": "^2.1.0"
   },
   "version": "1.0.10"
 }
