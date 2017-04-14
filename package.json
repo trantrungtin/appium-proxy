@@ -12,8 +12,13 @@
     "coveralls": "npm run-script coverage && node ./node_modules/coveralls/bin/coveralls.js < coverage/lcov.info",
     "test": "npm run-script build && babel test -d build/test && mocha build/test",
     "prepublish": "npm run build",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "precommit-msg": "echo 'Pre-commit checks...' && exit 0"
   },
+    "pre-commit": [
+    "precommit-msg",
+    "test"
+  ],
   "keywords": [
     "appium",
     "proxy"
@@ -56,6 +61,7 @@
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "node-mocks-http": "^1.6.1",
+    "pre-commit": "^1.2.2",
     "proxyquire": "^1.7.11",
     "semantic-release": "^6.3.2",
     "sinon": "^2.1.0"
