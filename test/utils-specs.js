@@ -21,6 +21,12 @@ describe('utils', () => {
 			});
 			utils.getSessionId(req).should.equal('43f3e91a-2606-496c-a554-828f14ba3a49');
 		});
+		it('should get right sessionID in window deletion request', () => {
+			let req = httpMocks.createRequest({
+				url: '/session/43f3e91a-2606-496c-a554-828f14ba3a49/window'
+			});
+			utils.getSessionId(req).should.equal('43f3e91a-2606-496c-a554-828f14ba3a49');
+		});
 		it('should return empty string if there is invalid url', () => {
 			let req = httpMocks.createRequest({
 				url: '/status'

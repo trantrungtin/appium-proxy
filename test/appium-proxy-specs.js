@@ -106,6 +106,33 @@ describe('AppiumProxy', () => {
 			assert.isTrue(res._isEndCalled());
 		});
 	});
+	describe('handleDeleteWindow', () => {
+		it('should return false if the needDeleteSession is true', () => {
+			sandbox.stub(utils, 'isDeleteWindow', () => {return true;});
+			proxy.opts.needDeleteSession = true;
+
+			proxy.handleDeleteWindow(req, res).should.be.false;
+		});
+		it('should return false if a request is not a delete session', () => {
+			sandbox.stub(utils, 'isDeleteWindow', () => {return false;});
+			proxy.opts.needDeleteSession = false;
+
+			proxy.handleDeleteWindow(req, res).should.be.false;
+		});
+		it('should return a fake respond that is a delete session', () => {
+			sandbox.stub(utils, 'isDeleteWindow', () => {return true;});
+			sandbox.stub(utils, 'getSessionId', () => {return 'abc';});
+			proxy.opts.needDeleteSession = false;
+
+			proxy.handleDeleteWindow(req, res).should.be.true;
+			var data = JSON.parse(res._getData());
+			data.status.should.equal(0);
+			data.sessionId.should.equal('abc');
+			assert.isNull(data.value);
+			res.statusCode.should.equal(200);
+			assert.isTrue(res._isEndCalled());
+		});
+	});
 	describe('forward', () => {
 		beforeEach(() => {
 			sandbox.stub(proxy.proxy, 'web');
