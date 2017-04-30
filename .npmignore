@@ -1,4 +1,5 @@
 /lib
+/build/test
 ./.npmignore
 *.log
 .coveralls.yml

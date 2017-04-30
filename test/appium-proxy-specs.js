@@ -2,6 +2,7 @@ import chai from 'chai';
 import sinon from 'sinon';
 import proxyquire from 'proxyquire';
 import httpMocks from 'node-mocks-http';
+import request from 'request';
 import AppiumProxy from '../lib/appium-proxy';
 import * as utils from '../lib/utils';
 import logger from '../lib/logger'
@@ -18,7 +19,7 @@ describe('AppiumProxy', () => {
 	var res;
 	beforeEach(() => {
 		proxy = new AppiumProxy({
-			realUrl: 'http://localhost:9001', 
+			realUrl: 'http://localhost:4723/wd/hub', 
 			commandTimeout: '100', 
 			capabilityIdentify: 'idtest'
 		});
@@ -31,7 +32,7 @@ describe('AppiumProxy', () => {
 	});
 	describe('constructor', () => {
 		it('should call AppiumProxy constructor with opts', () => {
-			proxy.opts.realUrl.should.equal('http://localhost:9001');
+			proxy.opts.realUrl.should.equal('http://localhost:4723/wd/hub');
 			proxy.opts.commandTimeout.should.equal('100');
 			proxy.opts.capabilityIdentify.should.equal('idtest');
 		});
@@ -39,9 +40,7 @@ describe('AppiumProxy', () => {
 	describe('handleCreatedSession', () => {
 		var fakeSession = {
 			'id1': {
-				'sessionRes': {
-					'ok' : true
-				}
+				'ok' : true
 			}
 		}
 		it('should return false if a request is not is create session request', () => {
@@ -264,7 +263,42 @@ describe('AppiumProxy', () => {
 
 			proxy.proxyResFunc({}, req, res);
 			utils.printHttpRespond.calledOnce.should.be.true;
-			expect(proxy.sessionMap['abc'].sessionRes).to.deep.equal(resultBody);
+			expect(proxy.sessionMap['abc']).to.deep.equal(resultBody);
+		});
+	});
+	describe('close', () => {
+		beforeEach(() => {
+			let sessionMap = {
+				id1: {
+					sessionId: '0a085e6e-b667-498f-b27c-23af3cee41e0'
+				}
+			}
+			proxy.sessionMap = sessionMap;
+			sandbox.stub(request, 'delete');
+		});
+		afterEach(() => {
+			request.delete.restore();
+			logger.info.restore();
+		});
+		it('should send a request to delete a session', () => {
+			request.delete.yields(null, {statusCode: 200}, null);
+			proxy.close();
+
+			assert(request.delete.calledOnce);
+			request.delete.getCall(0).args[0].url
+				.should.equal('http://localhost:4723/wd/hub/session/0a085e6e-b667-498f-b27c-23af3cee41e0');
+			logger.info.getCall(0).args[0].should.equal('DELETE 0a085e6e-b667-498f-b27c-23af3cee41e0 successful.')
+			proxy.sessionMap.should.be.empty;
+		});
+		it('cannot delete a session', () => {
+			request.delete.yields(null, {statusCode: 404}, null);
+			proxy.close();
+
+			assert(request.delete.calledOnce);
+			request.delete.getCall(0).args[0].url
+				.should.equal('http://localhost:4723/wd/hub/session/0a085e6e-b667-498f-b27c-23af3cee41e0');
+			expect(logger.info.getCall(0).args[0]).to.contains('Cannot DELETE 0a085e6e-b667-498f-b27c-23af3cee41e0');
+			proxy.sessionMap.should.be.empty;
 		});
 	});
 });

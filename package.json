@@ -7,6 +7,7 @@
     "appium-proxy": "./build/lib/main.js"
   },
   "scripts": {
+    "start": "npm run-script build && node ./build/lib/main.js --real-url http://localhost:4723/wd/hub",
     "build": "npm prune && babel lib -d build/lib",
     "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha build/test/* --report lcovonly -- -R spec",
     "coveralls": "npm run-script coverage && node ./node_modules/coveralls/bin/coveralls.js < coverage/lcov.info",
